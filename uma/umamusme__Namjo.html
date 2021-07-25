@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>우마무스메</title>
+</head>
+
+<style>
+    body{
+        background-color: #ecf0f3;
+    }
+    h1.mainTitle{
+        text-align: center;
+    }
+    .wapper{
+        width: 1100px;
+        text-align: center;
+        position: fixed;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        top: 50%;
+    }
+    .hint{
+        position: relative;
+        height: 50px;
+        width: 1100px;
+        text-align: left;
+        line-height: 50px;
+        font-size: 16pt;
+        font-weight: bold;
+    }
+    .hint > .mapWeather{
+        display: inline-block;
+        width: 100px;
+        text-align: center;
+        border-radius: 25px;
+        margin-right: 50px;
+        background-color: #ecf0f3;
+        box-shadow: 18px 18px 30px #d1d9e6,
+        -18px -18px 30px #fff;
+    }
+    .hint > .mapDistance{
+        display: inline-block;
+        width: 100px;
+        text-align: center;
+        border-radius: 25px;
+        background-color: #ecf0f3;
+        box-shadow: 18px 18px 30px #d1d9e6,
+        -18px -18px 30px #fff;
+    }
+    .hint > .ticket{
+        display: inline-block;
+        width: 100px;
+        text-align: center;
+        border-radius: 25px;
+        background-color: #ecf0f3;
+        box-shadow: 18px 18px 30px #d1d9e6,
+        -18px -18px 30px #fff;
+        position: absolute;
+        right: 120px;
+    }
+    .hint > .ticketCount{
+        display: inline-block;
+        width: 100px;
+        text-align: center;
+        border-radius: 25px;
+        background-color: #ecf0f3;
+        box-shadow: 10px 10px 20px #d1d9e6 inset,
+        -10px -10px 20px #fff inset;
+        position: absolute;
+        right: 0px;
+        font-size: 20pt;
+        font-weight: bold;
+    }
+    .playDis{
+        height: 550px;
+        width: 1100px;
+        background-color: #ecf0f3;
+        position: relative;
+        border-radius: 30px;
+        box-shadow: 18px 18px 30px #d1d9e6,
+        -18px -18px 30px #fff;
+        margin-top: 40px;
+    }
+    .map{
+        background-color: rgb(153, 248, 109);
+        height: 400px;
+        width: 700px;
+        border-radius: 30px;
+        position: relative;
+        left: 50%;
+        top: 30%;
+        transform: translate(-50%, -50%) perspective(500px) rotateX(45deg);
+    }
+    .map > .line{
+        background-color: rgb(254, 255, 211);
+        height: 300px;
+        width: 600px;
+        border-radius: 150px;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        top: 50%;
+    }
+    .map > .mark{
+        background-color: rgb(153, 248, 109);
+        height: 200px;
+        width: 500px;
+        border-radius: 100px;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        top: 50%;
+    }
+    .map > .uma{
+        height: 100px;
+        width: 100px;
+        background-image: url(uma.jpg);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        left: 350px;
+        top: 80%;
+    }
+    .playBut{
+        position: relative;
+        background: linear-gradient( -45deg, #6cc6cb, #eae5c9 );
+        width: 220px;
+        height: 70px;
+        line-height: 70px;
+        border-radius: 35px;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        top: 12%;
+        font-size: 20pt;
+        font-weight: bold;
+        color: #fff;
+        cursor: pointer;
+        box-shadow: 0 0 5px #6cc6cb,
+        0 0 5px #eae5c9;
+        transition: 0.1s;
+    }
+    .playBut:hover{
+        box-shadow: 10px 10px 30px #eae5c9,
+        -10px -10px 30px #6cc6cb;
+    }
+    .playBut:active{
+        box-shadow: 10px 10px 30px #bba892 inset,
+        -10px -10px 30px #5c82b4 inset;
+    }
+    .profile{
+        width: 1100px;
+        margin-top: 40px;
+        text-align: center;
+    }
+    .profile > .proUma{
+        width: 143px;
+        height: 324.5px;
+        float: left;
+        margin: 0 20px;
+        border-radius: 30px;
+        background-color: #ecf0f3;
+        box-shadow: 18px 18px 30px #d1d9e6,
+        -18px -18px 30px #fff;
+        position: relative;
+    }
+    .profile > .proUma > .expected{
+        position: absolute;
+        left: -15px;
+        top: -15px;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 20px;
+        font-size: 16pt;
+        font-weight: bold;
+        color: #fff;
+        background: linear-gradient( 45deg, #ffc2c2, #ff5450 );
+    }
+    .profile > .proUma > .umaImg{
+        width: 100px;
+        height: 100px;
+        margin: 21.5px;
+        border-radius: 15px;
+        background-color: #ecf0f3;
+        box-shadow: 3px 3px 5px #d1d9e6 inset,
+        -3px -3px 5px #fff inset;
+    }
+    .profile > .proUma > .umaText{
+        width: 100px;
+        height: 30px;
+        margin: 5px 21.5px;
+        border-radius: 15px;
+        background-color: #ecf0f3;
+        box-shadow: 3px 3px 5px #d1d9e6 inset,
+        -3px -3px 5px #fff inset;
+        line-height: 30px;
+        font-size: 14pt;
+        font-weight: bold;
+    }
+    .profile > .proUma > .ticketing{
+        width: 100px;
+        height: 50px;
+        margin: 5px 21.5px;
+    }
+    .profile > .proUma > .ticketing > .contBut{
+        width: 20px;
+        height: 100%;
+        line-height: 50px;
+        float: left;
+        background-color: #ecf0f3;
+        box-shadow: 3px 3px 5px #d1d9e6,
+        -3px -3px 5px #fff;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+    .profile > .proUma > .ticketing > .contBut:active{
+        transition: 0.2s;
+        box-shadow: 3px 3px 5px #d1d9e6 inset,
+        -3px -3px 5px #fff inset;
+    }
+    .profile > .proUma > .ticketing > .cont{
+        width: 50px;
+        margin: 0 5px;
+        height: 100%;
+        line-height: 50px;
+        background-color: #ecf0f3;
+        box-shadow: 3px 3px 5px #d1d9e6 inset,
+        -3px -3px 5px #fff inset;
+        float: left;
+        border-radius: 10px;
+        font-size: 20pt;
+        font-weight: bold;
+    }
+    .profile > .proUma > .umaImg > .black{
+        width: 100px;
+        height: 100px;
+        background-color: #000;
+        opacity: 0;
+        position: absolute;
+        border-radius: 15px;
+    }
+    .profile > .proUma:hover  > .umaImg > .black{
+        transition: 0.2s;
+        opacity: 0.5;
+    }
+    .profile > .proUma > .umaImg > .name{
+        width: 100px;
+        height: 100px;
+        color: #fff;
+        opacity: 0;
+        position: absolute;
+        line-height: 50px;
+        font-size: 14pt;
+    }
+    .profile > .proUma:hover > .umaImg > .name{
+        transition: 0.2s;
+        opacity: 1;
+    }
+</style>
+
+<script>
+    /*window.addEventListener("load", function() {
+	var el = document.querySelector("#uma");
+    el.onclick = function() {
+        this.animate([
+            { left: "350px"},
+            { left: "200px"}
+        ], {
+            duration: uma.speed,
+            fill: "forwards"
+        });         
+        };
+    });*/
+    /*시작*/
+    var ticket = 0;
+    var distance = 0; /* 경기장 - 0:단거리 1:마일 2:중거리 3:장거리 */
+    var weather = 0; /* 경기장 - 0:맑음 1:흐림 2:비 3:눈 */
+
+    window.onload = function () {
+        ticket = 5;
+        var ticketCount = document.getElementById('ticketCount');
+
+        setStart();
+    }
+
+    function setStart(){
+        ticketCount.innerText=ticket;
+
+        distance = Math.floor(Math.random()*4);
+        weather = Math.floor(Math.random()*4);
+        var mapDistance = document.getElementById('mapDistance');
+        var mapWeather = document.getElementById('mapWeather');
+
+        switch(distance){
+            case 0 : mapDistance.innerHTML="단거리"; break;
+            case 1 : mapDistance.innerHTML="마일"; break;
+            case 2 : mapDistance.innerHTML="중거리"; break;
+            case 3 : mapDistance.innerHTML="장거리"; break;
+            default: return;
+        }
+        switch(weather){
+            case 0 : mapWeather.innerHTML="맑음"; break;
+            case 1 : mapWeather.innerHTML="흐림"; break;
+            case 2 : mapWeather.innerHTML="비"; break;
+            case 3 : mapWeather.innerHTML="눈"; break;
+            default: return;
+        }
+    }
+
+    function play(){
+        alert("aa");
+    }
+
+    
+
+
+    //말 초깃값 설정
+    var rank = [];
+    var rankSort = [];
+    var umaCount = 0;
+    function uma(umaOper, umaDistance, umaWeather){
+        //작전 (고정)
+        this.umaOper = 0; /* 0:도주 1:선행 2:선입 3:후입 */
+        this.umaDistance = 0; /* 0:단거리 1:마일 2:중거리 3:장거리 */
+        this.umaWeather = 0; /* 0:맑음 1:흐림 2:비 3:눈 */
+
+        //상태(변동)
+        var tempFeel = Math.floor(Math.random()*3); /* 0:좋음 1:보통 2:나쁨 */
+        this.feel = tempFeel;
+
+        //스텟(변동)
+        function setSpeed(){
+            if(umaOper == 0){
+                return Math.floor(Math.random()*200+200);
+            } else if(umaOper == 1){
+                return Math.floor(Math.random()*200+200);
+            } else if(umaOper == 2){
+                return Math.floor(Math.random()*200+200);
+            } else {
+                return Math.floor(Math.random()*200+200);
+            }
+        }
+        var tempSpeed = setSpeed();
+
+        function setStamina(){
+            if(umaOper == 0){
+                return Math.floor(Math.random()*200+200);
+            } else if(umaOper == 1){
+                return Math.floor(Math.random()*200+200);
+            } else if(umaOper == 2){
+                return Math.floor(Math.random()*200+200);
+            } else {
+                return Math.floor(Math.random()*200+200);
+            }
+        }
+        var tempStamina = setStamina();
+
+        switch(tempFeel){
+            case 0 : 
+            this.speed = tempSpeed*1;
+            this.stamina = tempStamina*1;
+            this.int = Math.floor(Math.random()*70)+10;
+            break;
+
+            case 1 : 
+            this.speed = tempSpeed*0.9;
+            this.stamina = tempStamina*0.9;
+            this.int = Math.floor(Math.random()*70);
+            break;
+
+            case 2 : 
+            this.speed = tempSpeed*0.8;
+            this.stamina = tempStamina*0.8;
+            this.int = Math.floor(Math.random()*70)-10;
+            break;
+        }
+
+        rank[umaCount] = parseInt(this.speed+this.stamina);
+        umaCount++;
+    }
+
+    //말 목록
+    var cap = new uma(0, 0, 0);
+    var shower = new uma(0, 0, 0);
+    var maruzensky = new uma(0, 0, 0);
+    var creek = new uma(0, 0, 0);
+    var rudolf = new uma(0, 0, 0);
+    var turbo = new uma(0, 0, 0);
+
+    /*이부분이 문제임*/
+    rankSort=[1,2,3,4];
+
+    rankSort.forEach(element => {
+        console.log(element);
+    });
+    
+    /*rankSort = rank.slice();
+    rank.sort(function(a,b){
+        return b-a;
+    });*/
+
+    rank.sort((a,b) => {
+        return a-b;
+    });
+
+    
+</script>
+
+<body ondragstart="return false">
+    <div class="wapper">
+        <!--<h1 class="mainTitle">경마</h1>-->
+        <div class="hint">
+            <div class="mapWeather" id="mapWeather">날씨</div>
+            <div class="mapDistance" id="mapDistance">거리</div>
+            <div class="ticket">마권</div>
+            <div class="ticketCount" id="ticketCount">0</div>
+        </div>
+
+        <div class="playDis">
+            <div class="map">
+                <div class="line"></div>
+                <div class="mark"></div>
+                <div class="uma" id="uma"></div>
+            </div>
+            <div class="playBut" onclick="play()">START</div>
+        </div>
+
+        <div class="profile">
+            <div class="proUma" id="cap">
+                <div class="expected">1</div>
+                <div class="umaImg">
+                    <div class="black"></div>
+                    <div class="name">오구리<br>캡</div>
+                </div>
+                <div class="oper umaText">작전</div>
+                <div class="distance umaText">거리</div>
+                <div class="feel umaText">기분</div>
+                <div class="ticketing">
+                    <div class="up contBut">◀</div>
+                    <div class="cont">0</div>
+                    <div class="down contBut">▶</div>
+                </div>
+            </div>
+            <div class="proUma" id="shower">
+                <div class="expected">1</div>
+                <div class="umaImg">
+                    <div class="black"></div>
+                    <div class="name">라이스<br>샤워</div>
+                </div>
+                <div class="oper umaText"></div>
+                <div class="distance umaText"></div>
+                <div class="feel umaText"></div>
+                <div class="ticketing">
+                    <div class="up contBut">◀</div>
+                    <div class="cont">0</div>
+                    <div class="down contBut">▶</div>
+                </div>
+            </div>
+            <div class="proUma" id="maruzensky">
+                <div class="expected">1</div>
+                <div class="umaImg">
+                    <div class="black"></div>
+                    <div class="name">마루젠스키</div>
+                </div>
+                <div class="oper umaText"></div>
+                <div class="distance umaText"></div>
+                <div class="feel umaText"></div>
+                <div class="ticketing">
+                    <div class="up contBut">◀</div>
+                    <div class="cont">0</div>
+                    <div class="down contBut">▶</div>
+                </div>
+            </div>
+            <div class="proUma" id="creek">
+                <div class="expected">1</div>
+                <div class="umaImg">
+                    <div class="black"></div>
+                    <div class="name">슈퍼<br>크리크</div>
+                </div>
+                <div class="oper umaText"></div>
+                <div class="distance umaText"></div>
+                <div class="feel umaText"></div>
+                <div class="ticketing">
+                    <div class="up contBut">◀</div>
+                    <div class="cont">0</div>
+                    <div class="down contBut">▶</div>
+                </div>
+            </div>
+            <div class="proUma" id="rudolf">
+                <div class="expected">1</div>
+                <div class="umaImg">
+                    <div class="black"></div>
+                    <div class="name">심볼리<br>루돌프</div>
+                </div>
+                <div class="oper umaText"></div>
+                <div class="distance umaText"></div>
+                <div class="feel umaText"></div>
+                <div class="ticketing">
+                    <div class="up contBut">◀</div>
+                    <div class="cont">0</div>
+                    <div class="down contBut">▶</div>
+                </div>
+            </div>
+            <div class="proUma" id="turbo">
+                <div class="expected">1</div>
+                <div class="umaImg">
+                    <div class="black"></div>
+                    <div class="name">트윈<br>터보</div>
+                </div>
+                <div class="oper umaText"></div>
+                <div class="distance umaText"></div>
+                <div class="feel umaText"></div>
+                <div class="ticketing">
+                    <div class="up contBut">◀</div>
+                    <div class="cont">0</div>
+                    <div class="down contBut">▶</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
