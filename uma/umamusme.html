@@ -367,6 +367,8 @@
     function uma(umaName, umaOper, umaDistance, umaWeather){
         //이름
         this.umaName = umaName;
+        //위치
+        this.pos = 0;
         //작전 (고정)
         this.umaOper = umaOper; /* 0:도주 1:선행 2:선입 3:후입 */
         this.umaDistance = umaDistance; /* 0:단거리 1:마일 2:중거리 3:장거리 */
@@ -454,69 +456,65 @@
         }
     }
 
-    /*실시간으로 움직이는것들*/
-    var motionCont = 0;
+    
 
     //터보가 실시간으로 움직임
     /*움직이는 그림*/
     function umaRun(obj){
-        if(motionCont == 10){
-            hing.speed/2;
-        }
+        /*실시간으로 움직이는것들*/
+        console.log(obj.umaName)
+        var motionCont = 0;
         switch (motionCont){
             case 0 :
-                document.querySelector("#"+obj.umaName+"Move").style.backgroundImage="url("+obj.umaName+"2.png)"; 
-                
+                document.querySelector("#"+obj.umaName+"Move").style.backgroundImage="url("+obj.umaName+"1.png)";                 
                 motionCont++;
                 break;
             case 1 :
-                document.querySelector("#"+obj.umaName+"Move").style.backgroundImage="url("+obj.umaName+"3.png)";
-                motionCont++;
-                break;
-            case 2 :
                 document.querySelector("#"+obj.umaName+"Move").style.backgroundImage="url("+obj.umaName+"2.png)";
                 motionCont++;
                 break;
+            case 2 :
+                document.querySelector("#"+obj.umaName+"Move").style.backgroundImage="url("+obj.umaName+"3.png)";
+                motionCont++;
+                break;
             default:
-                document.querySelector("#"+obj.umaName+"Move").style.backgroundImage="url("+obj.umaName+"1.png)";
+                document.querySelector("#"+obj.umaName+"Move").style.backgroundImage="url("+obj.umaName+"2.png)";
                 motionCont = 0;
                 break;
         }
     }
 
     /*진짜로 움직임*/
-    var pos = [0,0];
-    var cal_pos = ["",""];
     function running(obj){
+        var temp = "";
         for(let i = 0; i < 2; i++){
-            
-            pos[i] += 8 * Math.random();
-            if(pos[i]<125){//직선
+            obj.pos += obj.speed/200;
+            if(obj.pos<125){//직선
             //350 -> 475
-            cal_pos[i] = "translate3d(" + (pos[i] + 350) + "px, 325px, 0px)"
-            }else if(pos[i] < 375){
-                cal_pos[i] = "translate3d(" + (475 + Math.sin((pos[i]-375)/250 * Math.PI)*-125) + "px, " + (325-125 + Math.cos((pos[i]-375)/250 * Math.PI)*-125) + "px, 0px)"
-            }else if(pos[i] < 625){//직선
+            temp = "translate3d(" + (obj.pos + 350) + "px, 325px, 0px)"
+            }else if(obj.pos < 375){
+                temp = "translate3d(" + (475 + Math.sin((obj.pos-375)/250 * Math.PI)*-125) + "px, " + (325-125 + Math.cos((obj.pos-375)/250 * Math.PI)*-125) + "px, 0px)"
+            }else if(obj.pos < 625){//직선
                 //475 -> 225
-                cal_pos[i] = "translate3d(" + (850 - pos[i]) + "px, 75px, 0px)"
-            }else if(pos[i] < 875){
-                cal_pos[i] = "translate3d(" + (225 + Math.sin((pos[i]-875)/250 * Math.PI)*125) + "px, " + (75+125 + Math.cos((pos[i]-875)/250 * Math.PI)*125) + "px, 0px)"
-            }else if(pos[i] < 1000){//직선
-                cal_pos[i] = "translate3d(" + ((pos[i]-875) + 225) + "px, 325px, 0px)"
+                temp = "translate3d(" + (850 - obj.pos) + "px, 75px, 0px)"
+            }else if(obj.pos < 875){
+                temp = "translate3d(" + (225 + Math.sin((obj.pos-875)/250 * Math.PI)*125) + "px, " + (75+125 + Math.cos((obj.pos-875)/250 * Math.PI)*125) + "px, 0px)"
+            }else if(obj.pos < 1000){//직선
+                temp = "translate3d(" + ((obj.pos-875) + 225) + "px, 325px, 0px)"
             }else{
-                pos[i] = 0;
-                cal_pos[i] = "translate3d(" + (pos[i] + 350) + "px, 325px, 0px)"
+                obj.pos = 0;
+                temp = "translate3d(" + (obj.pos + 350) + "px, 325px, 0px)"
             }
-            if(250 < pos[i] && pos[i] < 750){
-                cal_pos[i] += " rotate(0deg) scaleX(-1)"
+            if(250 < obj.pos && obj.pos < 750){
+                temp += " rotate(0deg) scaleX(-1)"
             }
             
-            cal_pos[i] += "rotateX(-90deg)"
+            temp += "rotateX(-90deg)"
             //cal_pos[i] += "translate3d(0px,0px,0px) rotateX(0deg)"
         }
 
 
-        document.getElementById(obj.umaName+'Move').style.transform = "translate(-50%,-80%)" + cal_pos[0];
+        document.getElementById(obj.umaName+'Move').style.transform = "translate(-50%,-80%)" + temp;
         //document.getElementById('turboMove2').style.transform = "translate(-50%,-80%)" +  cal_pos[1];
         // document.getElementById('turboMove2').style.perspective-origin = "top";
     }
@@ -525,9 +523,15 @@
     function init(){
         setInterval(function(){
             umaRun(cap);
+            
         }, cap.speed/3);
         setInterval(function(){
-            running(cap)
+            umaRun(turbo);
+        }, turbo.speed/3);
+
+        setInterval(function(){
+            running(cap);
+            running(turbo);
         }, 30);
         
     }
@@ -584,7 +588,7 @@
                 <div class="mark"></div>
                 <div class="setUma">
                     <div class="uma turbo" id="capMove"></div>
-                    <div class="uma turbo" id="capMove2"></div>
+                    <div class="uma turbo" id="turboMove"></div>
                 </div>
             </div>
             
