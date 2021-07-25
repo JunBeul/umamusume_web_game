@@ -115,7 +115,15 @@
         left: 50%;
         top: 50%;
     }
-    .map > .turbo{
+    .map > .setUma{
+        /*background-color: #ff5450;*/
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        transform: perspective(500px) rotateX(-22.5deg);
+    }
+    .map > .setUma > .uma{
         height: 100px;
         width: 100px;
         background-image: url(turbo1.png);
@@ -123,9 +131,9 @@
         background-repeat: no-repeat;
         background-position: center;
         position: absolute;
-        transform: translate(-50%, -50%);
-        left: 350px;
-        top: 80%;
+        transform: translate(-50%, -100%) ;
+        left: 550px;
+        top: 300px;
     }
     .playBut{
         position: relative;
@@ -311,29 +319,12 @@
 
     /*말 프로필 카드 세팅*/
     function resetUmaInfo(){
-        document.getElementById("cap").childNodes[5].innerText = translation(0, cap);
-        document.getElementById("cap").childNodes[7].innerText = translation(1, cap);
-        document.getElementById("cap").childNodes[9].innerText = translation(2, cap);
-
-        document.getElementById("shower").childNodes[5].innerText = translation(0, shower);
-        document.getElementById("shower").childNodes[7].innerText = translation(1, shower);
-        document.getElementById("shower").childNodes[9].innerText = translation(2, shower);
-
-        document.getElementById("maruzensky").childNodes[5].innerText = translation(0, maruzensky);
-        document.getElementById("maruzensky").childNodes[7].innerText = translation(1, maruzensky);
-        document.getElementById("maruzensky").childNodes[9].innerText = translation(2, maruzensky);
-
-        document.getElementById("creek").childNodes[5].innerText = translation(0, creek);
-        document.getElementById("creek").childNodes[7].innerText = translation(1, creek);
-        document.getElementById("creek").childNodes[9].innerText = translation(2, creek);
-
-        document.getElementById("rudolf").childNodes[5].innerText = translation(0, rudolf);
-        document.getElementById("rudolf").childNodes[7].innerText = translation(1, rudolf);
-        document.getElementById("rudolf").childNodes[9].innerText = translation(2, rudolf);
-
-        document.getElementById("turbo").childNodes[5].innerText = translation(0, turbo);
-        document.getElementById("turbo").childNodes[7].innerText = translation(1, turbo);
-        document.getElementById("turbo").childNodes[9].innerText = translation(2, turbo);
+        for(var i = 0;i <= umaCount;i++){
+            console.log(umaIndex[i].umaName);
+            document.querySelector("#"+umaIndex[i].umaName+"> .oper").innerText = translation(0, umaIndex[i]);
+            document.querySelector("#"+umaIndex[i].umaName+"> .distance").innerText = translation(1, umaIndex[i]);
+            document.querySelector("#"+umaIndex[i].umaName+"> .feel").innerText = translation(2, umaIndex[i]);
+        }
     }
 
     function translation(type, obj){
@@ -430,22 +421,10 @@
             this.int = Math.floor(Math.random()*50)-10;
             break;
         }
-
-        rank[umaCount] = parseInt(this.speed+this.stamina);
+        this.sumStatus = parseInt(this.speed+this.stamina);
+        rank[umaCount] = this.sumStatus;
         umaCount++;
     }
-
-    /*이부분이 문제임*/
-    /*rankSort=[1,2,3,4];
-
-    rankSort.forEach(element => {
-        console.log(element);
-    });*/
-    
-    /*rankSort = rank.slice();
-    rank.sort(function(a,b){
-        return b-a;
-    });*/
 
     /*말 목록*/
     var cap = new uma("cap", 0, 0, 0);
@@ -454,8 +433,27 @@
     var creek = new uma("creek", 3, 0, 0);
     var rudolf = new uma("rudolf", 0, 0, 0);
     var turbo = new uma("turbo", 1, 0, 0);
+    umaCount--;
+    var umaIndex = [cap, shower, maruzensky, creek, rudolf, turbo];
 
-    /*실시간으로 움직이는것들 (구현중)*/
+    /*랭킹*/
+    rank.sort(function(a, b){
+        return b-a;
+    });
+
+    /*랭킹 적용*/
+    function setRank(){
+        for(var i = 0;i<=umaCount;i++){
+            for(var j = 0;j<=umaCount;j++){
+                if(umaIndex[i].sumStatus == rank[j]){
+                    document.querySelector('#'+umaIndex[i].umaName+' > .expected').innerText = j+1;
+                    break;
+                }
+            }
+        }
+    }
+
+    /*실시간으로 움직이는것들*/
     var motionCont = 0;
 
     //터보가 실시간으로 움직임
@@ -498,7 +496,10 @@
         var ticketCount = document.getElementById('ticketCount');
 
         setStart();
+        
         resetUmaInfo();
+        
+        setRank();
     }
 
     /*플레이 버튼 클릭*/
@@ -510,10 +511,7 @@
 </script>
 
 <body ondragstart="return false">
-    <div class="test">
-    </div>
     <div class="wapper">
-        <!--<h1 class="mainTitle">경마</h1>-->
         <div class="hint">
             <div class="mapWeather" id="mapWeather">날씨</div>
             <div class="mapDistance" id="mapDistance">거리</div>
@@ -525,8 +523,12 @@
             <div class="map">
                 <div class="line"></div>
                 <div class="mark"></div>
-                <div class="turbo" id="turboMove"></div>
+                <div class="setUma">
+                    <div class="uma turbo" id="turboMove"></div>
+                </div>
             </div>
+            
+            
             <div class="playBut" onclick="play()">START</div>
         </div>
 
