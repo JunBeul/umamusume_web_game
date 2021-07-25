@@ -126,13 +126,13 @@
     .map > .setUma > .uma{
         height: 100px;
         width: 100px;
-        background-image: url(turbo1.png);
+        background-image: url(cap0.png);
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
         position: absolute;
         transform-origin : bottom center;
-        
+        transform : translate(-50%,-80%) translate3d(350px, 325px, 0px) rotateX(-90deg);
         /* transform: translate3d(300px,150px,0px) rotateX(-44.5deg); */
 
     }
@@ -363,7 +363,6 @@
 
     /*말 초깃값 설정*/
     var rank = [];
-    var rankSort = [];
     var umaCount = 0;
     function uma(umaName, umaOper, umaDistance, umaWeather){
         //이름
@@ -429,12 +428,12 @@
     }
 
     /*말 목록*/
-    var cap = new uma("cap", 0, 0, 0);
-    var shower = new uma("shower", 1, 0, 0);
-    var maruzensky = new uma("maruzensky", 2, 0, 0);
-    var creek = new uma("creek", 3, 0, 0);
-    var rudolf = new uma("rudolf", 0, 0, 0);
-    var turbo = new uma("turbo", 1, 0, 0);
+    var cap = new uma("cap", 2, 1, 3);
+    var shower = new uma("shower", 1, 3, 2);
+    var maruzensky = new uma("maruzensky", 0, 0, 0);
+    var creek = new uma("creek", 1, 2, 0);
+    var rudolf = new uma("rudolf", 3, 3, 1);
+    var turbo = new uma("turbo", 0, 1, 0);
     umaCount--;
     var umaIndex = [cap, shower, maruzensky, creek, rudolf, turbo];
 
@@ -459,38 +458,36 @@
     var motionCont = 0;
 
     //터보가 실시간으로 움직임
-    function turboRun(){
+    /*움직이는 그림*/
+    function umaRun(obj){
         if(motionCont == 10){
             hing.speed/2;
         }
         switch (motionCont){
             case 0 :
-                document.getElementById('turboMove').style.backgroundImage="url(oguri2.png)"; 
-                document.getElementById('turboMove2').style.backgroundImage="url(turbo4.png)"; 
+                document.querySelector("#"+obj.umaName+"Move").style.backgroundImage="url("+obj.umaName+"2.png)"; 
+                
                 motionCont++;
                 break;
             case 1 :
-                document.getElementById('turboMove').style.backgroundImage="url(oguri3.png)";
-                document.getElementById('turboMove2').style.backgroundImage="url(turbo4.png)"; 
+                document.querySelector("#"+obj.umaName+"Move").style.backgroundImage="url("+obj.umaName+"3.png)";
                 motionCont++;
                 break;
             case 2 :
-                document.getElementById('turboMove').style.backgroundImage="url(oguri2.png)";
-                document.getElementById('turboMove2').style.backgroundImage="url(turbo4.png)"; 
+                document.querySelector("#"+obj.umaName+"Move").style.backgroundImage="url("+obj.umaName+"2.png)";
                 motionCont++;
                 break;
             default:
-                document.getElementById('turboMove').style.backgroundImage="url(oguri1.png)";
-                document.getElementById('turboMove2').style.backgroundImage="url(turbo4.png)"; 
+                document.querySelector("#"+obj.umaName+"Move").style.backgroundImage="url("+obj.umaName+"1.png)";
                 motionCont = 0;
                 break;
         }
     }
 
-
+    /*진짜로 움직임*/
     var pos = [0,0];
     var cal_pos = ["",""];
-    function running(){
+    function running(obj){
         for(let i = 0; i < 2; i++){
             
             pos[i] += 8 * Math.random();
@@ -519,16 +516,36 @@
         }
 
 
-        document.getElementById('turboMove').style.transform = "translate(-50%,-80%)" + cal_pos[0];
-        document.getElementById('turboMove2').style.transform = "translate(-50%,-80%)" +  cal_pos[1];
+        document.getElementById(obj.umaName+'Move').style.transform = "translate(-50%,-80%)" + cal_pos[0];
+        //document.getElementById('turboMove2').style.transform = "translate(-50%,-80%)" +  cal_pos[1];
         // document.getElementById('turboMove2').style.perspective-origin = "top";
     }
 
     /*움직이기 시작*/
     function init(){
-        setInterval(turboRun, turbo.speed);
-        setInterval(running, 30);
+        setInterval(function(){
+            umaRun(cap);
+        }, cap.speed/3);
+        setInterval(function(){
+            running(cap)
+        }, 30);
         
+    }
+
+        /*마권*/
+        function upBut(clickClass){
+        if(ticket>0){
+            ticket--;
+            //document.querySelector();
+            alert(clickClass);
+        }
+        
+    }
+    function downBut(clickClass){
+        if(ticket<0){
+            ticket++;
+            alert(clickClass);
+        }
     }
     
     /*시작*/
@@ -541,17 +558,13 @@
         var ticketCount = document.getElementById('ticketCount');
 
         setStart();
-        
         resetUmaInfo();
-        
         setRank();
     }
-
-    init();
+    
     /*플레이 버튼 클릭*/
     function play(){
-        alert("aa");
-        
+        init();
     }
 
 </script>
@@ -570,8 +583,8 @@
                 <div class="line"></div>
                 <div class="mark"></div>
                 <div class="setUma">
-                    <div class="uma turbo" id="turboMove"></div>
-                    <div class="uma turbo" id="turboMove2"></div>
+                    <div class="uma turbo" id="capMove"></div>
+                    <div class="uma turbo" id="capMove2"></div>
                 </div>
             </div>
             
@@ -590,9 +603,9 @@
                 <div class="distance umaText">거리</div>
                 <div class="feel umaText">기분</div>
                 <div class="ticketing">
-                    <div class="up contBut">◀</div>
+                    <div class="up contBut" id="capDown" onclick="downBut(this.id)">◀</div>
                     <div class="cont">0</div>
-                    <div class="down contBut">▶</div>
+                    <div class="down contBut" id="capUp" onclick="upBut(this.id)">▶</div>
                 </div>
             </div>
             <div class="proUma" id="shower">
@@ -605,9 +618,9 @@
                 <div class="distance umaText"></div>
                 <div class="feel umaText"></div>
                 <div class="ticketing">
-                    <div class="up contBut">◀</div>
+                    <div class="up contBut" id="showerDown" onclick="downBut(this.id)">◀</div>
                     <div class="cont">0</div>
-                    <div class="down contBut">▶</div>
+                    <div class="down contBut" id="showerUp" onclick="upBut(this.id)">▶</div>
                 </div>
             </div>
             <div class="proUma" id="maruzensky">
@@ -620,9 +633,9 @@
                 <div class="distance umaText"></div>
                 <div class="feel umaText"></div>
                 <div class="ticketing">
-                    <div class="up contBut">◀</div>
+                    <div class="up contBut" id="maruzenskyDown" onclick="downBut(this.id)">◀</div>
                     <div class="cont">0</div>
-                    <div class="down contBut">▶</div>
+                    <div class="down contBut" id="maruzenskyUp" onclick="upBut(this.id)">▶</div>
                 </div>
             </div>
             <div class="proUma" id="creek">
@@ -635,9 +648,9 @@
                 <div class="distance umaText"></div>
                 <div class="feel umaText"></div>
                 <div class="ticketing">
-                    <div class="up contBut">◀</div>
+                    <div class="up contBut" id="creekDown" onclick="downBut(this.id)">◀</div>
                     <div class="cont">0</div>
-                    <div class="down contBut">▶</div>
+                    <div class="down contBut" id="creekUp" onclick="upBut(this.id)">▶</div>
                 </div>
             </div>
             <div class="proUma" id="rudolf">
@@ -650,9 +663,9 @@
                 <div class="distance umaText"></div>
                 <div class="feel umaText"></div>
                 <div class="ticketing">
-                    <div class="up contBut">◀</div>
+                    <div class="up contBut" id="rudolfDown" onclick="downBut(this.id)">◀</div>
                     <div class="cont">0</div>
-                    <div class="down contBut">▶</div>
+                    <div class="down contBut" id="rudolfUp" onclick="upBut(this.id)">▶</div>
                 </div>
             </div>
             <div class="proUma" id="turbo">
@@ -665,9 +678,9 @@
                 <div class="distance umaText"></div>
                 <div class="feel umaText"></div>
                 <div class="ticketing">
-                    <div class="up contBut">◀</div>
+                    <div class="up contBut" id="turboDown" onclick="downBut(this.id)">◀</div>
                     <div class="cont">0</div>
-                    <div class="down contBut">▶</div>
+                    <div class="down contBut" id="turboUp" onclick="upBut(this.id)">▶</div>
                 </div>
             </div>
         </div>
