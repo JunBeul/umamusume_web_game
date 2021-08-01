@@ -719,35 +719,42 @@
                 obj.stamina -= 0.12; //(obj.speed / 300); //* (distance + 1) 
             }
             
+            
+            var rank_offset = 0;
             if(obj.pos<125){//직선
             //350 -> 475
-            temp = "translate3d(" + (obj.pos + 350) + "px, 325px, 0px)"
+            temp = "translate3d(" + (obj.pos + 350) + "px, 325px, " + rank_offset + "px)"
             }else if(obj.pos < 375){
-                temp = "translate3d(" + (475 + Math.sin((obj.pos-375)/250 * Math.PI)*-125) + "px, " + (325-125 + Math.cos((obj.pos-375)/250 * Math.PI)*-125) + "px, 0px)"
+                temp = "translate3d(" + (475 + Math.sin((obj.pos-375)/250 * Math.PI)*-125) + "px, " + (325-125 + Math.cos((obj.pos-375)/250 * Math.PI)*-125) + "px, " + rank_offset + "px)";
             }else if(obj.pos < 625){//직선
                 //475 -> 225
-                temp = "translate3d(" + (850 - obj.pos) + "px, 75px, 0px)"
+                temp = "translate3d(" + (850 - obj.pos) + "px, 75px, " + rank_offset + "px)"
             }else if(obj.pos < 875){
-                temp = "translate3d(" + (225 + Math.sin((obj.pos-875)/250 * Math.PI)*125) + "px, " + (75+125 + Math.cos((obj.pos-875)/250 * Math.PI)*125) + "px, 0px)"
+                temp = "translate3d(" + (225 + Math.sin((obj.pos-875)/250 * Math.PI)*125) + "px, " + (75+125 + Math.cos((obj.pos-875)/250 * Math.PI)*125) + "px, " + rank_offset + "px)";
             }else if(obj.pos < 1000){//직선
-                temp = "translate3d(" + ((obj.pos-875) + 225) + "px, 325px, 0px)"
-            }else{
+                temp = "translate3d(" + ((obj.pos-875) + 225) + "px, 325px, " + rank_offset + "px)"
+            }else{//finish!
+                finish = true;
+                rank.push([obj.umaName,obj.pos]);
+                obj.rank = rank.length;
+                temp = "translate3d(" + (obj.pos + 350) + "px, 325px, "+ rank_offset +"px)";
                 final[obj.umaName] = true;
-                //rank.push([obj.umaName,obj.pos]);
-                rank.push(obj.umaOper+":"+obj.umaName);
+                console.log(obj.rank,obj.umaName);
                 matchResult.push(obj);
-                obj.pos = 0;
-                temp = "translate3d(" + (obj.pos + 350) + "px, 325px, 0px)"
+                //rank.push(obj.umaOper);
             }
+
+            temp += " rotateX(-90deg)";
+            temp += "translate3d(0px,0px," + ((6-obj.rank)*2 - 20) + "px)";
             if(!(250 < obj.pos && obj.pos < 750)){
-                temp += " rotate(0deg) scaleX(-1)"
+                temp += "scaleX(-1)"
             }
-            temp += "rotateX(-90deg)"
-            skillfun(obj);
+            skillfun(obj)
+
         }else{
-            temp = "translate3d(" + (obj.pos + 350) + "px, 325px, 0px)"
-            temp += "rotateX(-90deg)"
+            return;
         }
+        document.getElementById(obj.umaName+'Move').style.zIndex = 7 - obj.rank;
         document.getElementById(obj.umaName+'Move').style.transform = "translate(-50%,-80%)" + temp;
     }
     
@@ -844,22 +851,25 @@
     var rank_ = [];
     /*등수 확인*/
     function rankingCheck(){
-        rank_ = [];
-        for(let i = 0; i < umaIndex.length; i++){
-            rank_.push([umaIndex[i].pos,umaIndex[i].umaName]);
-        }
-        rank_.sort()
-        
-        for(let i = 0; i < rank_.length; i++){
-            // var t = document.getElementById(rank_[i][1]+'Move').style.transform;
-            // var a = "translate3d(0px," + (i) + "px,0px)";
-            // document.getElementById(rank_[i][1]+'Move').style.transform = t.slice(0,t.search("rotate")-1) + a + t.slice(t.search("rotate")-1,t.length);
-            var t = document.getElementById(rank_[i][1]+'Move').style.transform;
-            var a = "translate3d(0px,0px," + (i*2 - 10) + "px)";
-            document.getElementById(rank_[i][1]+'Move').style.transform = t + a
-            //console.log(document.getElementById(rank_[i][1]+'Move').style.transform);
-        }
-        if(rank.length == umaIndex.length){
+        if(!(rank.length == umaIndex.length)){
+            rank_ = [];
+            for(let i = 0; i < umaIndex.length; i++){
+                rank_.push([umaIndex[i].pos,umaIndex[i].umaName]);
+            }
+            rank_.sort(function(a,b){
+                return a[0] - b[0];
+            });
+            //rank_.reverse();
+
+            for(let i = 0; i < umaIndex.length; i++){
+                for(let j = 0; j < rank_.length; j++){
+                    if(umaIndex[i].umaName == rank_[j][1]){
+                        umaIndex[i].rank = j + 1;
+                        break;
+                    }
+                }
+            }
+        }else{
             setTimeout(finish(), 50000);
         }
     }
