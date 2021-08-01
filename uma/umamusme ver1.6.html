@@ -250,7 +250,7 @@
         background-position: center;
         position: absolute;
         transform-origin : bottom center;
-        transform : translate(-50%,-80%) translate3d(350px, 325px, 0px) rotateX(-90deg) rotateY(180deg);
+        transform : translate(-50%,-80%) translate3d(350px, 325px, 0px) rotateX(-90deg);
         /* transition: .1s; */
     }
     .map > .setUma > .setCap{
@@ -488,6 +488,16 @@
         umaIndex = [cap, shower, maruzensky, creek, rudolf, turbo];
 
         resetUmaInfo(); //말 프로필 카드 세팅
+        
+        function settings(){
+            console.log(umaIndex.length)
+            temp = "translate(-50%,-80%) translate3d(350px, 325px, 0px) rotateX(-90deg) scaleX(-1)";
+            for(let i = 0; i < umaIndex.length; i++){
+                console.log(i);
+                document.getElementById(umaIndex[i].umaName+'Move').style.transform = temp
+            }
+        }
+        settings();
     }
 
     /*말 프로필 카드 세팅*/
