@@ -83,6 +83,13 @@ function resetUmaInfo(){
     for(var i = 0;i <= umaIndex.length-1;i++){
         document.querySelector("#"+umaIndex[i].umaName+"> .oper").innerText = translation("oper", umaIndex[i]);
         document.querySelector("#"+umaIndex[i].umaName+"> .distance").innerText = translation("distance", umaIndex[i]);
+        if(umaIndex[i].feel == 0){
+            document.querySelector("#"+umaIndex[i].umaName+"> .feel").style.backgroundImage = "linear-gradient(to top, #ff9a9e 0%, #fecfef 99%, #fecfef 100%)";
+        }else if(umaIndex[i].feel == 1){
+            document.querySelector("#"+umaIndex[i].umaName+"> .feel").style.backgroundImage = "linear-gradient(120deg, #f6d365 0%, #fda085 100%)";
+        }else{
+            document.querySelector("#"+umaIndex[i].umaName+"> .feel").style.backgroundImage = "linear-gradient(-20deg, #6e45e2 0%, #88d3ce 100%)";
+        }
         document.querySelector("#"+umaIndex[i].umaName+"> .feel").innerText = translation("feel", umaIndex[i]);
     }
 
@@ -414,7 +421,7 @@ function skillFun(obj){
                 obj.skillSetting -= 1;
             }else if(obj.int >= Math.random()*100+1 && obj.skillCount == 0){
                 skillEffectView(obj);
-                obj.stamina += 100;
+                obj.stamina += 50;
                 obj.speed += 300;
                 obj.skillSetting += 300;
             }
