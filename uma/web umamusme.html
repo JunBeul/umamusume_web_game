@@ -11,18 +11,23 @@
     <link rel="stylesheet" href="style/finishBox.css">
     <link rel="stylesheet" href="style/wapper.css">
     <link rel="stylesheet" href="style/profile.css">
+    <link rel="stylesheet" href="style/endingBox.css">
 
     <script src="script/main.js"></script>
 </head>
 
 <body>
-    <div class="endingBox">
-        <!--엔딩 표시-->
+    <div class="endingBox backBlack" id="endingBox">
+        <div class="ending popUp">
+            <div class="mainTitle">탕진</div>
+            <div class="endingScene umaImg"></div>
+            <div class="successBut" onclick="replay()">다시하기</div>
+        </div>
     </div>
     
-    <div class="finishBox" id="finishBox">
-        <div class="ranking">
-            <div class="rankingTitle">순위</div>
+    <div class="finishBox backBlack" id="finishBox">
+        <div class="ranking popUp">
+            <div class="mainTitle">순위</div>
             <div class="umaRanking" id="first">
                 <div class="rankingNum ranking1st">1</div>
                 <div class="rankingImg umaImg"></div>
@@ -59,10 +64,16 @@
 
     <div class="wapper">
         <div class="hint">
-            <div class="mapWeather" id="mapWeather">날씨</div>
-            <div class="mapDistance" id="mapDistance">거리</div>
-            <div class="ticket">마권</div>
-            <div class="ticketCount" id="ticketCount">0</div>
+            <div class="left">
+                <div class="mapWeather" id="mapWeather">날씨</div>
+                <div class="mapDistance" id="mapDistance">거리</div>
+            </div>
+            <div class="right">
+                <div class="ticket">마권</div>
+                <div class="ticketCount" id="ticketCount">0</div>
+            </div>
+            
+            
         </div>
 
         <div class="playDis">

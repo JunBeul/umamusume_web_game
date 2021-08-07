@@ -95,6 +95,21 @@ function resetUmaInfo(){
         for(var j = 0;j<=umaIndex.length-1;j++){
             if(umaIndex[i].calStatus == expectedRanking[j]){
                 document.querySelector('#'+umaIndex[i].umaName+' > .expected').innerText = j+1;
+                document.querySelector('#'+umaIndex[i].umaName+' > .expected').classList.remove('ranking1st','ranking2nd','ranking3rd','Under');
+                switch(j){
+                    case 0:
+                        document.querySelector('#'+umaIndex[i].umaName+' > .expected').classList.add('ranking1st');
+                        break;
+                    case 1:
+                        document.querySelector('#'+umaIndex[i].umaName+' > .expected').classList.add('ranking2nd');
+                        break;
+                    case 2:
+                        document.querySelector('#'+umaIndex[i].umaName+' > .expected').classList.add('ranking3rd');
+                        break;
+                    default:
+                        document.querySelector('#'+umaIndex[i].umaName+' > .expected').classList.add('Under');
+                }
+                
                 break;
             }
         }
@@ -367,8 +382,8 @@ function skillFun(obj){
             }else if(obj.int >= Math.random()*100+1 && obj.skillCount == 0){
                 skillEffectView(obj);
                 obj.stamina += 50;
-                obj.speed += 150;
-                obj.skillSetting += 150;
+                obj.speed += 200;
+                obj.skillSetting += 200;
             }
             obj.skillCount++;
         }
@@ -399,7 +414,7 @@ function skillFun(obj){
                 obj.skillSetting -= 1;
             }else if(obj.int >= Math.random()*100+1 && obj.skillCount == 0){
                 skillEffectView(obj);
-                obj.stamina += 70;
+                obj.stamina += 100;
                 obj.speed += 300;
                 obj.skillSetting += 300;
             }
@@ -541,11 +556,9 @@ function rankingCheck(){
 }
 
 /*게임 끝*/
+
+
 function finish(){
-
-    document.getElementById('finishBox').style.opacity="1";
-    document.getElementById('finishBox').style.display="block";
-
     document.querySelector('#first > .umaRankingName').innerText = translation("name", matchResult[0]);
     document.querySelector('#first > .rankingImg').style.backgroundImage="url(img/"+matchResult[0].umaName+"Pro.png)"
     document.querySelector('#second > .umaRankingName').innerText = translation("name", matchResult[1]);
@@ -560,6 +573,14 @@ function finish(){
     document.querySelector('#sixth > .rankingImg').style.backgroundImage="url(img/"+matchResult[5].umaName+"Pro.png)"
     
     ticket += calculateTicket();
+
+    if(ticket == 0){
+        document.getElementById('endingBox').style.opacity="1";
+        document.getElementById('endingBox').style.display="block";
+    } else{
+        document.getElementById('finishBox').style.opacity="1";
+        document.getElementById('finishBox').style.display="block";
+    }
 }
 
 /*결과 마권 계산*/
@@ -572,7 +593,6 @@ function calculateTicket(){
     }
     //math.pow(i,2)
 }
-/*2차원 배열 검색*/
 
 /*이어하기*/
 function continueBut(){
@@ -585,6 +605,11 @@ function continueBut(){
         upList[i].classList.remove('contButOff');
         upList[i].classList.add('contButOn');
     }
+}
+
+/*새로하기*/
+function replay(){
+    location.reload();
 }
 
 /*마권*/

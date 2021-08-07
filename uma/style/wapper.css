@@ -11,31 +11,25 @@
     position: relative;
     height: 50px;
     width: 1100px;
-    text-align: left;
     line-height: 50px;
     font-size: 16pt;
     font-weight: bold;
 }
-.hint > .mapWeather{
+.left{
+    height: 100%;
+    width: 50%;
     display: inline-block;
-    width: 100px;
-    text-align: center;
-    border-radius: 25px;
-    margin-right: 50px;
-    background-color: #ecf0f3;
-    box-shadow: 18px 18px 30px #d1d9e6,
-    -18px -18px 30px #fff;
+    float: left;
+    text-align: left;
 }
-.hint > .mapDistance{
+.right{
+    height: 100%;
+    width: 50%;
     display: inline-block;
-    width: 100px;
-    text-align: center;
-    border-radius: 25px;
-    background-color: #ecf0f3;
-    box-shadow: 18px 18px 30px #d1d9e6,
-    -18px -18px 30px #fff;
+    clear: both;
+    text-align: right;
 }
-.hint > .ticket{
+.mapWeather{
     display: inline-block;
     width: 100px;
     text-align: center;
@@ -43,21 +37,38 @@
     background-color: #ecf0f3;
     box-shadow: 18px 18px 30px #d1d9e6,
     -18px -18px 30px #fff;
-    position: absolute;
-    right: 120px;
+    margin-right: 30px;
 }
-.hint > .ticketCount{
+.mapDistance{
     display: inline-block;
     width: 100px;
+    text-align: center;
+    border-radius: 25px;
+    background-color: #ecf0f3;
+    box-shadow: 18px 18px 30px #d1d9e6,
+    -18px -18px 30px #fff;
+}
+.ticket{
+    display: inline-block;
+    width: 100px;
+    text-align: center;
+    border-radius: 25px;
+    background-color: #ecf0f3;
+    box-shadow: 18px 18px 30px #d1d9e6,
+    -18px -18px 30px #fff;
+}
+.ticketCount{
+    display: inline-block;
+    min-width: 60px;
     text-align: center;
     border-radius: 25px;
     background-color: #ecf0f3;
     box-shadow: 10px 10px 20px #d1d9e6 inset,
     -10px -10px 20px #fff inset;
-    position: absolute;
-    right: 0px;
     font-size: 20pt;
     font-weight: bold;
+    padding: 0 20px 0 20px;
+    margin-left: 30px;
 }
 .playDis{
     height: 450px;

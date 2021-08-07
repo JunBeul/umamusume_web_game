@@ -1,30 +1,5 @@
-.finishBox{
-    height: 100%;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
-    position: absolute;
-    z-index: 10;
-    display: none;
-    opacity: 0;
-    transition: .2s;
-}
 .ranking{
-    background-color: #ecf0f3;
     width: 500px;
-    transform: translate(-50%, -50%);
-    left: 50%;
-    top: 50%;
-    position: absolute;
-    border-radius: 30px;
-    padding-bottom: 5px;
-}
-.rankingTitle{
-    font-size: 25pt;
-    font-weight: bold;
-    text-align: center;
-    margin: 20px -20px 20px 20px;
-    letter-spacing: 20pt;
 }
 .umaRanking{
     width: 90%;
@@ -48,18 +23,7 @@
     margin: 15px;
     float: left;
 }
-.ranking1st{
-    background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
-}
-.ranking2nd{
-    background-image: linear-gradient(to top, #c4c5c7 0%, #dcdddf 52%, #ebebeb 100%);
-}
-.ranking3rd{
-    background-image: linear-gradient(to top, #c79081 0%, #dfa579 100%);
-}
-.Under{
-    background-image: linear-gradient(60deg, #3d3393 0%, #2b76b9 37%, #2cacd1 65%, #35eb93 100%);
-}
+
 .rankingImg{
     width: 60px;
     height: 60px;
