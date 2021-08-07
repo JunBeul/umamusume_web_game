@@ -1,3 +1,182 @@
+/*우마무스메 생성*/
+/*말 목록*/
+var cap;
+var shower;
+var maruzensky;
+var creek;
+var rudolf;
+var turbo;
+var umaIndex = [];
+function setUmamusume(){
+    cap = new uma("cap", 2, 1, 3);
+    shower = new uma("shower", 1, 3, 2);
+    maruzensky = new uma("maruzensky", 0, 0, 0);
+    creek = new uma("creek", 1, 2, 0);
+    rudolf = new uma("rudolf", 3, 3, 1);
+    turbo = new uma("turbo", 0, 1, 0);
+    umaIndex = [cap, shower, maruzensky, creek, rudolf, turbo];
+}
+
+/*스킬*/
+function skillFun(obj){
+    //캡 스킬 : 승리의 고동
+    if(obj.umaName == "cap"){
+        if(obj.pos >= 800){
+            if(obj.skillCount != 0 && obj.skillSetting > 0){
+                obj.speed -= 1;
+                obj.skillSetting -= 1;
+            }else if(obj.int >= Math.random()*100+1 && obj.skillCount == 0){
+                skillEffectView(obj);
+                obj.stamina += 50;
+                obj.speed += 200;
+                obj.skillSetting += 200;
+            }
+            obj.skillCount++;
+        }
+    }
+    /*if(obj.umaName == "shower" && obj.int >= skillSetting && obj.skillCount ==0){
+        skillEffectView(obj);
+    }
+    if(obj.umaName == "maruzensky" && obj.int >= skillSetting && obj.skillCount ==0){
+        skillEffectView(obj);
+    }*/
+
+    //크리크 스킬 : 클리어 하트
+    if(obj.umaName == "creek"){ 
+        if(obj.stamina <= 10){
+            if(obj.int >= Math.random()*100+1 && obj.skillCount == 0){
+                skillEffectView(obj);
+                obj.stamina += 50;
+            }
+        obj.skillCount++;
+        }
+    }
+
+    //루돌프 스킬 : 호선의 프로페서
+    if(obj.umaName == "rudolf"){
+        if(obj.pos >= 640){
+            if(obj.skillCount != 0 && obj.skillSetting > 0){
+                obj.speed -= 1;
+                obj.skillSetting -= 1;
+            }else if(obj.int >= Math.random()*100+1 && obj.skillCount == 0){
+                skillEffectView(obj);
+                obj.stamina += 50;
+                obj.speed += 300;
+                obj.skillSetting += 300;
+            }
+            obj.skillCount++;
+        }
+    }
+
+    //터보 스킬 : 선두 필승!
+    if(obj.umaName == "turbo"){
+        if(obj.skillCount != 0 && obj.skillSetting > 0){
+            obj.speed -= 1;
+            obj.skillSetting -= 1;
+        }else if(obj.int >= Math.random()*100+1 && obj.skillCount == 0 ){
+            skillEffectView(obj);
+            obj.speed += 400;
+            obj.skillSetting += 400;
+        }
+        obj.skillCount++;
+    }
+}
+function skillEffectView(obj){
+    document.querySelector('.skillEffect').style.bottom="0";
+    document.querySelector('.skillEffect').style.backgroundImage="url(img/skill/"+obj.umaName+"Skill.png)";
+    setTimeout(function(){
+        document.querySelector('.skillEffect').style.bottom="-100%";
+    },1000)
+}
+
+/*시작*/
+var ticket = 0;
+var distance = 0; /* 경기장 - 0:단거리 1:마일 2:중거리 3:장거리 */
+var weather = 0; /* 경기장 - 0:맑음 1:흐림 2:비 3:눈 */
+window.onload = function () {
+    var ticketCount = document.getElementById('ticketCount');
+    ticket = 5;
+
+    setStart();
+}
+
+/*말 초깃값 설정*/
+var expectedRanking = [];
+var umaCount;
+var valueOperSpeed = [500,400,325,275]; //속도
+var valueOperStamina = [100,150,240,400]; //스테미나
+var valueDistance = 
+[[1.1,1,0.95,0.9], /*단거리 [단거리,마일,중거리,장거리]*/
+[1,1.1,1,0.95], /*마일 [단거리,마일,중거리,장거리]*/
+[0.95,1,1.1,1], /*중거리 [단거리,마일,중거리,장거리]*/
+[0.9,0.95,1,1.1]]; /*장거리 [단거리,마일,중거리,장거리]*/
+var valueWeather = 
+[[1,.975,.9,.9], /*맑음 [맑음, 흐림, 비, 눈]*/
+[1,1,.92,.92], /*흐림 [맑음, 흐림, 비, 눈]*/
+[1,.975,1,.92], /*비 [맑음, 흐림, 비, 눈]*/
+[1,.975,.92,1]]; /*눈 [맑음, 흐림, 비, 눈]*/
+function uma(umaName, umaOper, umaDistance, umaWeather){
+    //이름
+    this.umaName = umaName;
+    //위치 값
+    this.pos = 0;
+    //애니메이션 카운트
+    this.motionCont = 0;
+    //작전 (고정)
+    this.umaOper = umaOper; /* 0:도주 1:선행 2:선입 3:후입 */
+    this.umaDistance = umaDistance; /* 0:단거리 1:마일 2:중거리 3:장거리 */
+    this.umaWeather = umaWeather; /* 0:맑음 1:흐림 2:비 3:눈 */
+    //상태(변동)
+    var tempFeel = Math.floor(Math.random()*10);
+    switch(tempFeel){ /* 0:좋음 1:보통 2:나쁨 */
+        case 0: case 1: case 2: case 3: case 4: case 5: 
+            this.feel = 0;
+            break;
+        case 6: case 7: case 8:
+            this.feel = 1;
+            break;
+        default :
+            this.feel = 2;
+    }
+    //스텟(변동)
+    var tempSpeed = Math.random()*51+(valueOperSpeed[umaOper]-25);
+    var tempStamina = Math.random()*41+(valueOperStamina[umaOper]-20);
+    var tempInt = Math.floor(Math.random()*21+10);
+
+    this.calStatus = elapsedTime(tempSpeed, tempStamina);
+    expectedRanking[umaCount] = this.calStatus;
+
+    switch(this.feel){
+        case 0 : 
+            tempSpeed *= 1;
+            tempStamina *= 1;
+            tempInt += 10;
+            break;
+        case 1 : 
+            tempSpeed *= .95;
+            tempStamina *= .95;
+            tempInt += 0;
+            break;
+        case 2 : 
+            tempSpeed *= .9;
+            tempStamina *= .9;
+            tempInt -= 5;
+            break;
+    }
+
+    this.speed = tempSpeed*valueDistance[distance][umaOper];
+    this.stamina = tempStamina*valueWeather[weather][umaOper];
+    this.int = tempInt;
+    this.currentRank = 0;
+    this.operCount = 0;
+    this.operSetting = 0;
+    this.skillCount = 0;
+    this.skillSetting = 0;
+    umaCount++;
+}
+
+
+/*초기 세팅*/
 function setStart(){
     /*경기장 세팅*/
     var mapDistance = document.getElementById('mapDistance');
@@ -8,14 +187,12 @@ function setStart(){
 
     /*마권 건 것 화면 초기화*/
     var contClass = document.getElementsByClassName('cont');
-    for(var i = 0;i <= contClass.length-1;i++){
+    for(var i in contClass){
         contClass[i].innerText = "0";
     }
 
     distance = Math.floor(Math.random()*4);
     weather = Math.floor(Math.random()*4);
-
-
 
     switch(distance){
         case 0 : mapDistance.innerHTML="단거리"; break;
@@ -57,38 +234,36 @@ function setStart(){
     rank = [];
     tickingUma = [0,0,0,0,0,0];
 
-    /*말 셋팅*/
-    cap = new uma("cap", 2, 1, 3);
-    shower = new uma("shower", 1, 3, 2);
-    maruzensky = new uma("maruzensky", 0, 0, 0);
-    creek = new uma("creek", 1, 2, 0);
-    rudolf = new uma("rudolf", 3, 3, 1);
-    turbo = new uma("turbo", 0, 1, 0);
-    umaIndex = [cap, shower, maruzensky, creek, rudolf, turbo];
+    /*첫 화면 말 방향 셋팅*/
+    temp = "translate(-50%,-80%) translate3d(350px, 325px, 0px) rotateX(-90deg) scaleX(-1)";
+    for(var i in umaIndex){
+        document.getElementById(umaIndex[i].umaName+'Move').style.transform = temp
+    }
 
+    setUmamusume(); //말 생성
     resetUmaInfo(); //말 프로필 카드 세팅
-    settings(); //첫 화면 말 방향 셋팅
 }
 
 /*첫화면 말 방향 셋팅*/
 function settings(){
-    temp = "translate(-50%,-80%) translate3d(350px, 325px, 0px) rotateX(-90deg) scaleX(-1)";
-    for(let i = 0; i < umaIndex.length; i++){
-        document.getElementById(umaIndex[i].umaName+'Move').style.transform = temp
-    }
+    
 }
 
 /*말 프로필 카드 세팅*/
 function resetUmaInfo(){
-    for(var i = 0;i <= umaIndex.length-1;i++){
+    for(var i in umaIndex){
         document.querySelector("#"+umaIndex[i].umaName+"> .oper").innerText = translation("oper", umaIndex[i]);
         document.querySelector("#"+umaIndex[i].umaName+"> .distance").innerText = translation("distance", umaIndex[i]);
-        if(umaIndex[i].feel == 0){
-            document.querySelector("#"+umaIndex[i].umaName+"> .feel").style.backgroundImage = "linear-gradient(to top, #ff9a9e 0%, #fecfef 99%, #fecfef 100%)";
-        }else if(umaIndex[i].feel == 1){
-            document.querySelector("#"+umaIndex[i].umaName+"> .feel").style.backgroundImage = "linear-gradient(120deg, #f6d365 0%, #fda085 100%)";
-        }else{
-            document.querySelector("#"+umaIndex[i].umaName+"> .feel").style.backgroundImage = "linear-gradient(-20deg, #6e45e2 0%, #88d3ce 100%)";
+        document.querySelector("#"+umaIndex[i].umaName+"> .profileImg > .name").innerHTML = translation("name", umaIndex[i]).replace(' ', '<br/>');
+        switch(umaIndex[i].feel){
+            case 0:
+                document.querySelector("#"+umaIndex[i].umaName+"> .feel").style.backgroundImage = "linear-gradient(to top, #ff9a9e 0%, #fecfef 99%, #fecfef 100%)";
+                break;
+            case 1:
+                document.querySelector("#"+umaIndex[i].umaName+"> .feel").style.backgroundImage = "linear-gradient(120deg, #f6d365 0%, #fda085 100%)";
+                break;
+            default:
+                document.querySelector("#"+umaIndex[i].umaName+"> .feel").style.backgroundImage = "linear-gradient(-20deg, #6e45e2 0%, #88d3ce 100%)";
         }
         document.querySelector("#"+umaIndex[i].umaName+"> .feel").innerText = translation("feel", umaIndex[i]);
     }
@@ -123,7 +298,126 @@ function resetUmaInfo(){
     }
 }
 
-function translation(type, obj){ //한글번역
+/*예상순위 계산*/
+function elapsedTime(speed, stamina){
+    var x = (stamina/0.12);
+    var y = (1000-x)*0.2
+    return (x*(speed/1000))+y;
+}
+
+/*마권 투표*/
+var tickingUma = [0,0,0,0,0,0];
+var upList = document.getElementsByClassName('up');
+var downList = document.getElementsByClassName('down');
+var timer;
+var istrue = false;
+var autoCount;
+
+function upBut(clickId){
+    var clickTick = document.getElementById(clickId).parentNode.parentNode.id;
+    var num = Number(changeNum(clickTick));
+
+    if(ticket <= 0){
+        clearInterval(autoCount);
+    }
+    if(ticket > 0){
+        ticket--;
+        tickingUma[num]++;
+        document.getElementById(clickId).previousElementSibling.innerText = tickingUma[num];
+        ticketCount.innerText = String(ticket);
+        document.getElementById('playBut').classList.remove('playButOff');
+        document.getElementById('playBut').classList.add('playButOn');
+        if(tickingUma[num] > 0){
+            downList[num].classList.remove('contButOff');
+            downList[num].classList.add('contButOn');
+        }
+        if(ticket == 0){
+            for(var i = 0; i<upList.length; i++){
+                upList[i].classList.add('contButOff');
+                upList[i].classList.remove('contButOn');
+            }
+        }
+    }
+}
+
+function downBut(clickId){
+    var clickTick = document.getElementById(clickId).parentNode.parentNode.id;
+    var num = Number(changeNum(clickTick));
+    var sumTickingUma = tickingUma.reduce((a,b) => (a+b));
+
+    if(tickingUma[num] <= 0){
+        clearInterval(autoCount);
+    }
+    if(tickingUma[num] > 0){
+        ticket++;
+        tickingUma[num]--;
+        document.getElementById(clickId).nextElementSibling.innerText = tickingUma[num];
+        ticketCount.innerText = String(ticket);
+        if(tickingUma[num] == 0){
+            downList[num].classList.add('contButOff');
+            downList[num].classList.remove('contButOn');
+        }
+        if(ticket > 0){
+            for(var i = 0; i<upList.length; i++){
+                upList[i].classList.remove('contButOff');
+                upList[i].classList.add('contButOn');
+            }
+        }
+        if(sumTickingUma == 0){
+            document.getElementById('playBut').classList.add('playButOff');
+            document.getElementById('playBut').classList.remove('playButOn');
+        }
+    }
+}
+function upButHolding(clickId){
+    istrue = true;
+    timer = setTimeout(function(){
+        holding("up", clickId);
+    }, 1000);
+}
+
+function downButHolding(clickId){
+    istrue = true;
+    timer = setTimeout(function(){
+        holding("down", clickId);
+    }, 1000);
+}
+
+function holding(value, clickId){
+    if(timer){
+        clearTimeout(timer);
+    }
+    if(istrue){
+        autoCount = setInterval(function(){
+            if(value == "up"){
+                upBut(clickId);
+            }else if(value == "down"){
+                downBut(clickId);
+            }
+        },50);
+    }
+}
+
+function holdCancel(){
+    istrue = false;
+    clearInterval(autoCount);
+}
+
+/*플레이 버튼 클릭*/
+function play(){
+    init();
+    document.getElementById('playBut').classList.add('playButOff');
+    document.getElementById('playBut').classList.remove('playButOn');
+    for(var i = 0; i<upList.length; i++){
+        upList[i].classList.add('contButOff');
+        upList[i].classList.remove('contButOn');
+        downList[i].classList.add('contButOff');
+        downList[i].classList.remove('contButOn');
+    }
+}
+
+/*번역기*/
+function translation(type, obj){
     if(type == "oper"){ //작전 한글번역
         switch(obj.umaOper){
             case 0 :
@@ -172,139 +466,16 @@ function translation(type, obj){ //한글번역
         }
     }
 }
-
-/*말 초깃값 설정*/
-var expectedRanking = [];
-var umaCount;
-var valueOperSpeed = [500,400,325,275]; //속도
-var valueOperStamina = [100,150,240,400]; //스테미나
-var valueDistance = 
-[[1.1,1,0.95,0.9], /*단거리 [단거리,마일,중거리,장거리]*/
-[1,1.1,1,0.95], /*마일 [단거리,마일,중거리,장거리]*/
-[0.95,1,1.1,1], /*중거리 [단거리,마일,중거리,장거리]*/
-[0.9,0.95,1,1.1]]; /*장거리 [단거리,마일,중거리,장거리]*/
-var valueWeather = 
-[[1,.975,.9,.9], /*맑음 [맑음, 흐림, 비, 눈]*/
-[1,1,.92,.92], /*흐림 [맑음, 흐림, 비, 눈]*/
-[1,.975,1,.92], /*비 [맑음, 흐림, 비, 눈]*/
-[1,.975,.92,1]]; /*눈 [맑음, 흐림, 비, 눈]*/
-function uma(umaName, umaOper, umaDistance, umaWeather){
-    //이름
-    this.umaName = umaName;
-    //위치 값
-    this.pos = 0;
-    //애니메이션 카운트
-    this.motionCont = 0;
-    //작전 (고정)
-    this.umaOper = umaOper; /* 0:도주 1:선행 2:선입 3:후입 */
-    this.umaDistance = umaDistance; /* 0:단거리 1:마일 2:중거리 3:장거리 */
-    this.umaWeather = umaWeather; /* 0:맑음 1:흐림 2:비 3:눈 */
-    //상태(변동)
-    var tempFeel = Math.floor(Math.random()*10);
-    switch(tempFeel){ /* 0:좋음 1:보통 2:나쁨 */
-        case 0: case 1: case 2: case 3: case 4: case 5: 
-            this.feel = 0;
-            break;
-        case 6: case 7: case 8:
-            this.feel = 1;
-            break;
-        default :
-            this.feel = 2;
+/*말을 번호로 변경*/
+function changeNum(getName){
+    for(var i = 0;i <= umaIndex.length-1;i++){
+        if(getName == umaIndex[i].umaName){
+            return i;
+        }
     }
-    //스텟(변동)
-    var tempSpeed = Math.random()*51+(valueOperSpeed[umaOper]-25);
-    var tempStamina = Math.random()*41+(valueOperStamina[umaOper]-20);
-    var tempInt = Math.floor(Math.random()*21+10);
-    
-    /*this.calStatus = elapsedTime(tempSpeed, tempStamina);
-    expectedRanking[umaCount] = this.calStatus;*/
-
-    switch(this.feel){
-        case 0 : 
-            tempSpeed *= 1;
-            tempStamina *= 1;
-            tempInt += 10;
-            break;
-        case 1 : 
-            tempSpeed *= .95;
-            tempStamina *= .95;
-            tempInt += 0;
-            break;
-        case 2 : 
-            tempSpeed *= .9;
-            tempStamina *= .9;
-            tempInt -= 5;
-            break;
-    }
-
-    this.calStatus = elapsedTime(tempSpeed, tempStamina);
-    expectedRanking[umaCount] = this.calStatus;
-
-    this.speed = tempSpeed*valueDistance[distance][umaOper];
-    this.stamina = tempStamina*valueWeather[weather][umaOper];
-    this.int = tempInt;
-    this.currentRank = 0;
-    this.operCount = 0;
-    this.operSetting = 0;
-    this.skillCount = 0;
-    this.skillSetting = 0;
-    umaCount++;
 }
 
-/*예상순위 계산*/
-function elapsedTime(speed, stamina){
-    var x = (stamina/0.12);
-    var y = (1000-x)*0.2
-    return (x*(speed/1000))+y;
-}
 
-/*말 목록*/
-var cap;
-var shower;
-var maruzensky;
-var creek;
-var rudolf;
-var turbo;
-var umaIndex = [];
-
-/*const umaManage = {
-    cap:{
-        umaName: "cap",
-        umaOper: 1,
-        umaDistanceL: 2,
-        umaWeather: 3
-    },
-    shower:{
-        umaName: "shower",
-        umaOper: 1,
-        umaDistanceL: 3,
-        umaWeather: 2
-    },
-    maruzensky:{
-        umaName: "maruzensky",
-        umaOper: 0,
-        umaDistanceL: 0,
-        umaWeather: 0
-    },
-    creek:{
-        umaName: "creek",
-        umaOper: 1,
-        umaDistanceL: 2,
-        umaWeather: 0
-    },
-    rudolf:{
-        umaName: "rudolf",
-        umaOper: 3,
-        umaDistanceL: 3,
-        umaWeather: 1
-    },
-    turbo:{
-        umaName: "turbo",
-        umaOper: 0,
-        umaDistanceL: 1,
-        umaWeather: 0
-    }
-}*/
 
 /*실시간으로 움직이는것들*/
 /*움직이는 그림*/
@@ -378,79 +549,6 @@ function running(obj){
     document.getElementById(obj.umaName+'Move').style.transform = "translate(-50%,-80%)" + temp;
 }
 
-/*스킬*/
-function skillFun(obj){
-    //캡 스킬 : 승리의 고동
-    if(obj.umaName == "cap"){
-        if(obj.pos >= 800){
-            if(obj.skillCount != 0 && obj.skillSetting > 0){
-                obj.speed -= 1;
-                obj.skillSetting -= 1;
-            }else if(obj.int >= Math.random()*100+1 && obj.skillCount == 0){
-                skillEffectView(obj);
-                obj.stamina += 50;
-                obj.speed += 200;
-                obj.skillSetting += 200;
-            }
-            obj.skillCount++;
-        }
-    }
-    /*if(obj.umaName == "shower" && obj.int >= skillSetting && obj.skillCount ==0){
-        skillEffectView(obj);
-    }
-    if(obj.umaName == "maruzensky" && obj.int >= skillSetting && obj.skillCount ==0){
-        skillEffectView(obj);
-    }*/
-
-    //크리크 스킬 : 클리어 하트
-    if(obj.umaName == "creek"){ 
-        if(obj.stamina <= 10){
-            if(obj.int >= Math.random()*100+1 && obj.skillCount == 0){
-                skillEffectView(obj);
-                obj.stamina += 50;
-            }
-        obj.skillCount++;
-        }
-    }
-
-    //루돌프 스킬 : 호선의 프로페서
-    if(obj.umaName == "rudolf"){
-        if(obj.pos >= 640){
-            if(obj.skillCount != 0 && obj.skillSetting > 0){
-                obj.speed -= 1;
-                obj.skillSetting -= 1;
-            }else if(obj.int >= Math.random()*100+1 && obj.skillCount == 0){
-                skillEffectView(obj);
-                obj.stamina += 50;
-                obj.speed += 300;
-                obj.skillSetting += 300;
-            }
-            obj.skillCount++;
-        }
-    }
-
-    //터보 스킬 : 선두 필승!
-    if(obj.umaName == "turbo"){
-        if(obj.skillCount != 0 && obj.skillSetting > 0){
-            obj.speed -= 1;
-            obj.skillSetting -= 1;
-        }else if(obj.int >= Math.random()*100+1 && obj.skillCount == 0 ){
-            skillEffectView(obj);
-            obj.speed += 400;
-            obj.skillSetting += 400;
-        }
-        obj.skillCount++;
-    }
-}
-
-function skillEffectView(obj){
-    document.querySelector('.skillEffect').style.bottom="0";
-    document.querySelector('.skillEffect').style.backgroundImage="url(img/skill/"+obj.umaName+"Skill.png)";
-    setTimeout(function(){
-        document.querySelector('.skillEffect').style.bottom="-100%";
-    },1000)
-}
-
 function operFun(obj){
     //도주
     if(obj.umaOper == 0){
@@ -512,20 +610,14 @@ var intervalRunning;
 /*움직이기 시작*/
 function init(){
     intervalRunAnimation = setInterval(function(){
-        runAnimation(cap),
-        runAnimation(shower),
-        runAnimation(maruzensky),
-        runAnimation(creek),
-        runAnimation(rudolf),
-        runAnimation(turbo)
+        for(var i in umaIndex){
+            runAnimation(umaIndex[i])
+        }
     }, 90);
     intervalRunning = setInterval(function(){
-        running(cap),
-        running(shower),
-        running(maruzensky),
-        running(creek),
-        running(rudolf),
-        running(turbo),
+        for(var i in umaIndex){
+            running(umaIndex[i])
+        }
         rankingCheck()
     }, 5);
 
@@ -537,7 +629,7 @@ var setFinishRank = [];
 function rankingCheck(){
     if(!(rank.length == umaIndex.length)){
         setFinishRank = [];
-        for(let i = 0; i < umaIndex.length; i++){
+        for(var i in umaIndex){
             setFinishRank.push([umaIndex[i].pos,umaIndex[i].umaName]);
         }
 
@@ -545,8 +637,8 @@ function rankingCheck(){
             return a[0] - b[0];
         });
 
-        for(let i = 0; i < umaIndex.length; i++){
-            for(let j = 0; j < setFinishRank.length; j++){
+        for(var i = 0; i < umaIndex.length; i++){
+            for(var j = 0; j < setFinishRank.length; j++){
                 if(umaIndex[i].umaName == setFinishRank[j][1]){
                     if(!(umaIndex[i].umaName in final)){
                         umaIndex[i].currentRank = j + 1;
@@ -563,8 +655,6 @@ function rankingCheck(){
 }
 
 /*게임 끝*/
-
-
 function finish(){
     document.querySelector('#first > .umaRankingName').innerText = translation("name", matchResult[0]);
     document.querySelector('#first > .rankingImg').style.backgroundImage="url(img/"+matchResult[0].umaName+"Pro.png)"
@@ -617,138 +707,4 @@ function continueBut(){
 /*새로하기*/
 function replay(){
     location.reload();
-}
-
-/*마권*/
-var tickingUma = [0,0,0,0,0,0];
-var upList = document.getElementsByClassName('up');
-var downList = document.getElementsByClassName('down');
-
-function upBut(clickId){
-    var clickTick = document.getElementById(clickId).parentNode.parentNode.id;
-    var num = Number(changeNum(clickTick));
-
-    if(ticket <= 0){
-        clearInterval(autoCount);
-    }
-
-    if(ticket > 0){
-        ticket--;
-        tickingUma[num]++;
-        document.getElementById(clickId).previousElementSibling.innerText = tickingUma[num];
-        ticketCount.innerText = String(ticket);
-        document.getElementById('playBut').classList.remove('playButOff');
-        document.getElementById('playBut').classList.add('playButOn');
-        if(tickingUma[num] > 0){
-            downList[num].classList.remove('contButOff');
-            downList[num].classList.add('contButOn');
-        }
-        if(ticket == 0){
-            for(var i = 0; i<upList.length; i++){
-                upList[i].classList.add('contButOff');
-                upList[i].classList.remove('contButOn');
-            }
-        }
-    }
-}
-function downBut(clickId){
-    var clickTick = document.getElementById(clickId).parentNode.parentNode.id;
-    var num = Number(changeNum(clickTick));
-
-    if(tickingUma[num] <= 0){
-        clearInterval(autoCount);
-    }
-
-    if(tickingUma[num] > 0){
-        ticket++;
-        tickingUma[num]--;
-        document.getElementById(clickId).nextElementSibling.innerText = tickingUma[num];
-        ticketCount.innerText = String(ticket);
-        if(tickingUma[num] == 0){
-            downList[num].classList.add('contButOff');
-            downList[num].classList.remove('contButOn');
-        }
-        if(ticket > 0){
-            for(var i = 0; i<upList.length; i++){
-                upList[i].classList.remove('contButOff');
-                upList[i].classList.add('contButOn');
-            }
-        }
-        var sumTickingUma = tickingUma.reduce((a,b) => (a+b));
-        if(sumTickingUma == 0){
-            document.getElementById('playBut').classList.add('playButOff');
-            document.getElementById('playBut').classList.remove('playButOn');
-        }
-    }
-    
-}
-
-var timer;
-var istrue = false;
-var autoCount;
-function upButHolding(clickId){
-    istrue = true;
-    timer = setTimeout(function(){
-        holding("up", clickId);
-    }, 1000);
-}
-
-function downButHolding(clickId){
-    istrue = true;
-    timer = setTimeout(function(){
-        holding("down", clickId);
-    }, 1000);
-}
-
-function holding(value, clickId){
-    if(timer){
-        clearTimeout(timer);
-    }
-    if(istrue){
-        autoCount = setInterval(function(){
-            if(value == "up"){
-                upBut(clickId);
-            }else if(value == "down"){
-                downBut(clickId);
-            }
-        },50);
-    }
-}
-
-function holdCancel(){
-    istrue = false;
-    clearInterval(autoCount);
-}
-
-function changeNum(getName){
-    for(var i = 0;i <= umaIndex.length-1;i++){
-        if(getName == umaIndex[i].umaName){
-            return i;
-        }
-    }
-}
-
-/*시작*/
-var ticket = 0;
-var distance = 0; /* 경기장 - 0:단거리 1:마일 2:중거리 3:장거리 */
-var weather = 0; /* 경기장 - 0:맑음 1:흐림 2:비 3:눈 */
-
-window.onload = function () {
-    var ticketCount = document.getElementById('ticketCount');
-    ticket = 5;
-
-    setStart();
-}
-
-/*플레이 버튼 클릭*/
-function play(){
-    init();
-    document.getElementById('playBut').classList.add('playButOff');
-    document.getElementById('playBut').classList.remove('playButOn');
-    for(var i = 0; i<upList.length; i++){
-        upList[i].classList.add('contButOff');
-        upList[i].classList.remove('contButOn');
-        downList[i].classList.add('contButOff');
-        downList[i].classList.remove('contButOn');
-    }
 }
