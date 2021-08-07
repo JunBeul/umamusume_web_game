@@ -1,0 +1,137 @@
+.profile{
+    width: 1100px;
+    margin-top: 40px;
+    text-align: center;
+}
+.profile > .proUma{
+    width: 143px;
+    height: 324.5px;
+    float: left;
+    margin: 0 20px;
+    border-radius: 30px;
+    background-color: #ecf0f3;
+    box-shadow: 18px 18px 30px #d1d9e6,
+    -18px -18px 30px #fff;
+    position: relative;
+}
+.profile > .proUma > .expected{
+    position: absolute;
+    left: -15px;
+    top: -15px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 20px;
+    font-size: 16pt;
+    font-weight: bold;
+    color: #fff;
+}
+.profile > .proUma > .profileImg{
+    width: 100px;
+    height: 100px;
+    margin: 21.5px;
+    border-radius: 15px;
+    background-color: #ecf0f3;
+    box-shadow: 3px 3px 5px #d1d9e6 inset,
+    -3px -3px 5px #fff inset;
+}
+#cap > .profileImg{
+    background-image: url(../img/capPro.png);
+}
+#shower > .profileImg{
+    background-image: url(../img/showerPro.png);
+}
+#maruzensky > .profileImg{
+    background-image: url(../img/maruzenskyPro.png);
+}
+#creek > .profileImg{
+    background-image: url(../img/creekPro.png);
+}
+#rudolf > .profileImg{
+    background-image: url(../img/rudolfPro.png);
+}
+#turbo > .profileImg{
+    background-image: url(../img/turboPro.png);
+}
+.profile > .proUma > .umaText{
+    width: 100px;
+    height: 30px;
+    margin: 5px 21.5px;
+    border-radius: 15px;
+    background-color: #ecf0f3;
+    box-shadow: 3px 3px 5px #d1d9e6 inset,
+    -3px -3px 5px #fff inset;
+    line-height: 30px;
+    font-size: 14pt;
+    
+    font-weight: bold;
+}
+.profile > .proUma > .ticketing{
+    width: 100px;
+    height: 50px;
+    margin: 5px 21.5px;
+}
+.profile > .proUma > .ticketing > .contBut{
+    width: 20px;
+    height: 100%;
+    line-height: 50px;
+    float: left;
+    background-color: #ecf0f3;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.profile > .proUma > .ticketing > .contButOn{
+    box-shadow: 3px 3px 5px #d1d9e6,
+    -3px -3px 5px #fff;
+    pointer-events: auto;
+    color: #000;
+}
+.profile > .proUma > .ticketing > .contButOn:active{
+    box-shadow: 3px 3px 5px #d1d9e6 inset,
+    -3px -3px 5px #fff inset;
+}
+.profile > .proUma > .ticketing > .contButOff{
+    box-shadow: 3px 3px 5px #d1d9e6 inset,
+    -3px -3px 5px #fff inset;
+    pointer-events: none;
+    color: #999;
+}
+.profile > .proUma > .ticketing > .cont{
+    width: 50px;
+    margin: 0 5px;
+    height: 100%;
+    line-height: 50px;
+    background-color: #ecf0f3;
+    box-shadow: 3px 3px 5px #d1d9e6 inset,
+    -3px -3px 5px #fff inset;
+    float: left;
+    border-radius: 10px;
+    font-size: 20pt;
+    font-weight: bold;
+}
+.profile > .proUma > .profileImg > .black{
+    width: 100px;
+    height: 100px;
+    background-color: #000;
+    opacity: 0;
+    position: absolute;
+    border-radius: 15px;
+}
+.profile > .proUma:hover  > .profileImg > .black{
+    transition: 0.2s;
+    opacity: 0.7;
+}
+.profile > .proUma > .profileImg > .name{
+    width: 100px;
+    height: 100px;
+    color: #fff;
+    opacity: 0;
+    position: absolute;
+    line-height: 50px;
+    font-size: 14pt;
+}
+.profile > .proUma:hover > .profileImg > .name{
+    transition: 0.2s;
+    opacity: 1;
+}

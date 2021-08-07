@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>웹 우마무스메</title>
+
+    <link rel="stylesheet" href="style/main.css">
+    <link rel="stylesheet" href="style/finishBox.css">
+    <link rel="stylesheet" href="style/wapper.css">
+    <link rel="stylesheet" href="style/profile.css">
+    <link rel="stylesheet" href="style/endingBox.css">
+
+    <script src="script/main.js"></script>
+</head>
+
+<body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
+    <div class="endingBox backBlack" id="endingBox">
+        <div class="ending popUp">
+            <div class="mainTitle">탕진</div>
+            <div class="endingScene umaImg"></div>
+            <div class="successBut" onclick="replay()">다시하기</div>
+        </div>
+    </div>
+    
+    <div class="finishBox backBlack" id="finishBox">
+        <div class="ranking popUp">
+            <div class="mainTitle">순위</div>
+            <div class="umaRanking" id="first">
+                <div class="rankingNum ranking1st">1</div>
+                <div class="rankingImg umaImg"></div>
+                <div class="umaRankingName"></div>
+            </div>
+            <div class="umaRanking" id="second">
+                <div class="rankingNum ranking2nd">2</div>
+                <div class="rankingImg umaImg"></div>
+                <div class="umaRankingName"></div>
+            </div>
+            <div class="umaRanking" id="third">
+                <div class="rankingNum ranking3rd">3</div>
+                <div class="rankingImg umaImg"></div>
+                <div class="umaRankingName"></div>
+            </div>
+            <div class="umaRanking" id="fourth">
+                <div class="rankingNum Under">4</div>
+                <div class="rankingImg umaImg"></div>
+                <div class="umaRankingName"></div>
+            </div>
+            <div class="umaRanking" id="fifth">
+                <div class="rankingNum Under">5</div>
+                <div class="rankingImg umaImg"></div>
+                <div class="umaRankingName"></div>
+            </div>
+            <div class="umaRanking" id="sixth">
+                <div class="rankingNum Under">6</div>
+                <div class="rankingImg umaImg"></div>
+                <div class="umaRankingName"></div>
+            </div>
+            <div class="successBut" onclick="continueBut()">확인</div>
+        </div>
+    </div>
+
+    <div class="wapper">
+        <div class="hint">
+            <div class="left">
+                <div class="mapWeather" id="mapWeather">날씨</div>
+                <div class="mapDistance" id="mapDistance">거리</div>
+            </div>
+            <div class="right">
+                <div class="ticket">마권</div>
+                <div class="ticketCount" id="ticketCount">0</div>
+            </div>
+            
+            
+        </div>
+
+        <div class="playDis">
+            <div class="map sunny cloudy rain snow" id="map">
+                <div class="line"></div>
+                <div class="mark"></div>
+                <div class="startLine"></div>
+                <div class="setUma">
+                    <div class="uma setCap" id="capMove"></div>
+                    <div class="uma setShower" id="showerMove"></div>
+                    <div class="uma setMaruzensky" id="maruzenskyMove"></div>
+                    <div class="uma setCreek" id="creekMove"></div>
+                    <div class="uma setRudolf" id="rudolfMove"></div>
+                    <div class="uma setTurbo" id="turboMove"></div>
+                </div>
+            </div>
+            <div class="skillEffect"></div>
+            <div class="playBut playButOff" id="playBut" onclick="play()">START</div>
+        </div>
+
+        <div class="profile">
+            <div class="proUma" id="cap">
+                <div class="expected">1</div>
+                <div class="profileImg umaImg">
+                    <div class="black"></div>
+                    <div class="name">오구리<br>캡</div>
+                </div>
+                <div class="oper umaText">작전</div>
+                <div class="distance umaText">거리</div>
+                <div class="feel umaText">기분</div>
+                <div class="ticketing">
+                    <div class="down contBut contButOff" id="capDown" onmousedown="downButHolding(this.id)" onmouseup="holdCancel()" onclick="downBut(this.id)">◀</div>
+                    <div class="cont">0</div>
+                    <div class="up contBut contButOn" id="capUp" onmousedown="upButHolding(this.id)" onmouseup="holdCancel()" onclick="upBut(this.id)">▶</div>
+                </div>
+            </div>
+            <div class="proUma" id="shower">
+                <div class="expected">1</div>
+                <div class="profileImg umaImg">
+                    <div class="black"></div>
+                    <div class="name">라이스<br>샤워</div>
+                </div>
+                <div class="oper umaText"></div>
+                <div class="distance umaText"></div>
+                <div class="feel umaText"></div>
+                <div class="ticketing">
+                    <div class="down contBut contButOff" id="showerDown" onmousedown="downButHolding(this.id)" onmouseup="holdCancel()" onclick="downBut(this.id)">◀</div>
+                    <div class="cont">0</div>
+                    <div class="up contBut contButOn" id="showerUp" onmousedown="upButHolding(this.id)" onmouseup="holdCancel()" onclick="upBut(this.id)">▶</div>
+                </div>
+            </div>
+            <div class="proUma" id="maruzensky">
+                <div class="expected">1</div>
+                <div class="profileImg umaImg">
+                    <div class="black"></div>
+                    <div class="name">마루젠스키</div>
+                </div>
+                <div class="oper umaText"></div>
+                <div class="distance umaText"></div>
+                <div class="feel umaText"></div>
+                <div class="ticketing">
+                    <div class="down contBut contButOff" id="maruzenskyDown" onmousedown="downButHolding(this.id)" onmouseup="holdCancel()" onclick="downBut(this.id)">◀</div>
+                    <div class="cont">0</div>
+                    <div class="up contBut contButOn" id="maruzenskyUp" onmousedown="upButHolding(this.id)" onmouseup="holdCancel()" onclick="upBut(this.id)">▶</div>
+                </div>
+            </div>
+            <div class="proUma" id="creek">
+                <div class="expected">1</div>
+                <div class="profileImg umaImg">
+                    <div class="black"></div>
+                    <div class="name">슈퍼<br>크리크</div>
+                </div>
+                <div class="oper umaText"></div>
+                <div class="distance umaText"></div>
+                <div class="feel umaText"></div>
+                <div class="ticketing">
+                    <div class="down contBut contButOff" id="creekDown" onmousedown="downButHolding(this.id)" onmouseup="holdCancel()" onclick="downBut(this.id)">◀</div>
+                    <div class="cont">0</div>
+                    <div class="up contBut contButOn" id="creekUp" onmousedown="upButHolding(this.id)" onmouseup="holdCancel()" onclick="upBut(this.id)">▶</div>
+                </div>
+            </div>
+            <div class="proUma" id="rudolf">
+                <div class="expected">1</div>
+                <div class="profileImg umaImg">
+                    <div class="black"></div>
+                    <div class="name">심볼리<br>루돌프</div>
+                </div>
+                <div class="oper umaText"></div>
+                <div class="distance umaText"></div>
+                <div class="feel umaText"></div>
+                <div class="ticketing">
+                    <div class="down contBut contButOff" id="rudolfDown" onmousedown="downButHolding(this.id)" onmouseup="holdCancel()" onclick="downBut(this.id)">◀</div>
+                    <div class="cont">0</div>
+                    <div class="up contBut contButOn" id="rudolfUp" onmousedown="upButHolding(this.id)" onmouseup="holdCancel()" onclick="upBut(this.id)">▶</div>
+                </div>
+            </div>
+            <div class="proUma" id="turbo">
+                <div class="expected">1</div>
+                <div class="profileImg umaImg">
+                    <div class="black"></div>
+                    <div class="name">트윈<br>터보</div>
+                </div>
+                <div class="oper umaText"></div>
+                <div class="distance umaText"></div>
+                <div class="feel umaText"></div>
+                <div class="ticketing">
+                    <div class="down contBut contButOff" id="turboDown" onmousedown="downButHolding(this.id)" onmouseup="holdCancel()" onclick="downBut(this.id)">◀</div>
+                    <div class="cont">0</div>
+                    <div class="up contBut contButOn" id="turboUp" onmousedown="upButHolding(this.id)" onmouseup="holdCancel()" onclick="upBut(this.id)">▶</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
