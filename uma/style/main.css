@@ -1,4 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 /*초기화*/
+*{
+    cursor: default;
+}
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -46,7 +50,7 @@ table {
 /*공통*/
 body{
     background-color: #ecf0f3;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
 }
 body, html{
     width: 100%;
@@ -124,4 +128,9 @@ body, html{
 .successBut:active{
     box-shadow: 10px 10px 20px #bba892 inset,
     -10px -10px 20px #5c82b4 inset;
+}
+.icon{
+    background-size: 70% 70%;
+    background-repeat: no-repeat;
+    background-position: center;
 }

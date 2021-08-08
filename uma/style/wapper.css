@@ -29,35 +29,35 @@
     text-align: right;
 }
 .mapWeather{
-    display: inline-block;
     width: 100px;
+    height: 50px;
     text-align: center;
     border-radius: 25px;
     background-color: #ecf0f3;
     box-shadow: 18px 18px 30px #d1d9e6,
     -18px -18px 30px #fff;
     margin-right: 30px;
+    float: left;
 }
 .mapDistance{
-    display: inline-block;
     width: 100px;
     text-align: center;
     border-radius: 25px;
     background-color: #ecf0f3;
     box-shadow: 18px 18px 30px #d1d9e6,
     -18px -18px 30px #fff;
+    float: left;
 }
 .ticket{
-    display: inline-block;
     width: 100px;
     text-align: center;
     border-radius: 25px;
     background-color: #ecf0f3;
     box-shadow: 18px 18px 30px #d1d9e6,
     -18px -18px 30px #fff;
+    float: right;
 }
 .ticketCount{
-    display: inline-block;
     min-width: 60px;
     text-align: center;
     border-radius: 25px;
@@ -68,6 +68,7 @@
     font-weight: bold;
     padding: 0 20px 0 20px;
     margin-left: 30px;
+    float: right;
 }
 .playDis{
     height: 450px;
@@ -198,6 +199,8 @@
     font-weight: bold;
     color: #fff;
     transition: 0.1s;
+    letter-spacing: 3pt;
+    margin-right: -3pt;
 }
 .playButOn{
     background: linear-gradient( -45deg, #6cc6cb, #eae5c9 );
@@ -209,6 +212,9 @@
 .playButOn:hover{
     box-shadow: 10px 10px 30px #eae5c9,
     -10px -10px 30px #6cc6cb;
+    font-size: 21pt;
+    letter-spacing: 5pt;
+    margin-right: -5pt;
 }
 .playButOn:active{
     box-shadow: 10px 10px 30px #bba892 inset,
