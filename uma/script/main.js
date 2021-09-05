@@ -169,7 +169,6 @@ function operFun(obj){
 
 /*2. 말 객체*/
 let expectedRanking = [];
-let umaCount;
 let valueOperSpeed = [500,400,325,275]; //속도
 let valueOperStamina = [100,150,240,400]; //스테미나
 let valueDistance = 
@@ -182,13 +181,19 @@ let valueWeather =
 [1,1,.92,.92], /*흐림 [맑음, 흐림, 비, 눈]*/
 [1,.975,1,.92], /*비 [맑음, 흐림, 비, 눈]*/
 [1,.975,.92,1]]; /*눈 [맑음, 흐림, 비, 눈]*/
+
 function uma(umaName, umaOper, umaDistance, umaWeather){
     //이름
     this.umaName = umaName;
     //위치 값
     this.pos = 0;
-    //애니메이션 카운트
+    //기본 값
     this.motionCont = 0;
+    this.currentRank = 0;
+    this.operCount = 0;
+    this.operSetting = 0;
+    this.skillCount = 0;
+    this.skillSetting = 0;
     //작전 (고정)
     this.umaOper = umaOper; /* 0:도주 1:선행 2:선입 3:후입 */
     this.umaDistance = umaDistance; /* 0:단거리 1:마일 2:중거리 3:장거리 */
@@ -211,7 +216,7 @@ function uma(umaName, umaOper, umaDistance, umaWeather){
     let tempInt = Math.floor(Math.random()*21+10);
 
     this.calStatus = elapsedTime(tempSpeed, tempStamina);
-    expectedRanking[umaCount] = this.calStatus;
+    expectedRanking.push(this.calStatus);
 
     switch(this.feel){
         case 0 : 
@@ -234,12 +239,6 @@ function uma(umaName, umaOper, umaDistance, umaWeather){
     this.speed = tempSpeed*valueDistance[distance][umaOper];
     this.stamina = tempStamina*valueWeather[weather][umaOper];
     this.int = tempInt;
-    this.currentRank = 0;
-    this.operCount = 0;
-    this.operSetting = 0;
-    this.skillCount = 0;
-    this.skillSetting = 0;
-    umaCount++;
 }
 function elapsedTime(speed, stamina){ //예상순위 계산
     let x = (stamina/0.12);
@@ -624,7 +623,7 @@ function setStart(){
         default: return;
     }
     //변수 초기화
-    umaCount = 0;
+    expectedRanking = [];
     matchResult = [];
     intervalRunAnimation = undefined;
     intervalRunning = undefined;
