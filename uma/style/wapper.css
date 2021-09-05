@@ -168,24 +168,6 @@
     transform : translate(-50%,-80%) translate3d(350px, 325px, 0px) rotateX(-90deg);
     transition: .1s;
 }
-.map > .setUma > .setCap{
-    background-image: url(../img/running/cap2.png);
-}
-.map > .setUma > .setShower{
-    background-image: url(../img/running/shower2.png);
-}
-.map > .setUma > .setMaruzensky{
-    background-image: url(../img/running/maruzensky2.png);
-}
-.map > .setUma > .setCreek{
-    background-image: url(../img/running/creek2.png);
-}
-.map > .setUma > .setRudolf{
-    background-image: url(../img/running/rudolf2.png);
-}
-.map > .setUma > .setTurbo{
-    background-image: url(../img/running/turbo2.png);
-}
 .playBut{
     position: absolute;
     width: 220px;

@@ -417,6 +417,8 @@ function finish(){ //게임 끝
     document.querySelector('#sixth > .rankingImg').style.backgroundImage="url(img/"+matchResult[5].umaName+"Pro.png)"
     
     ticket += calculateTicket();
+    localStorage.saveTicket = ticket;
+    localStorage.saveData = true;
 
     if(ticket == 0){
         document.getElementById('endingBox').style.opacity="1";
@@ -558,8 +560,11 @@ let ticket = 0;
 let distance = 0; /* 경기장 - 0:단거리 1:마일 2:중거리 3:장거리 */
 let weather = 0; /* 경기장 - 0:맑음 1:흐림 2:비 3:눈 */
 window.onload = function () {
-    let ticketCount = document.getElementById('ticketCount');
-    ticket = 5;
+    if(localStorage.saveData){
+        ticket = localStorage.saveTicket;
+    } else {
+        ticket = 5;
+    }
     setStart();
 }
 /*Main. 움직이기 시작*/
@@ -581,7 +586,6 @@ function init(){
 /*Main. 초기 세팅*/
 function setStart(){
     let mapDistance = document.getElementById('mapDistance');
-    let mapWeather = document.getElementById('mapWeather');
     let contClass = document.getElementsByClassName('cont');
     //티켓 화면 초기화
     ticketCount.innerText=ticket;
@@ -635,9 +639,15 @@ function setStart(){
     resetUmaInfo(); //말 프로필 카드 세팅
 
     //말 첫화면 방향
+    document.querySelector('.map > .setUma > .setFirstUma').style.backgroundImage = "url(img/running/"+umaIndex[0].umaName+"2.png)";
+    document.querySelector('.map > .setUma > .setSecondUma').style.backgroundImage = "url(img/running/"+umaIndex[1].umaName+"2.png)";
+    document.querySelector('.map > .setUma > .setThirdUma').style.backgroundImage = "url(img/running/"+umaIndex[2].umaName+"2.png)";
+    document.querySelector('.map > .setUma > .setFourthUma').style.backgroundImage = "url(img/running/"+umaIndex[3].umaName+"2.png)";
+    document.querySelector('.map > .setUma > .setFifthUma').style.backgroundImage = "url(img/running/"+umaIndex[4].umaName+"2.png)";
+    document.querySelector('.map > .setUma > .setSixthUma').style.backgroundImage = "url(img/running/"+umaIndex[5].umaName+"2.png)";
     temp = "translate(-50%,-80%) translate3d(350px, 325px, 0px) rotateX(-90deg) scaleX(-1)";
     for(let i in umaIndex){
-        document.getElementById(umaIndex[i].umaName+'Move').style.transform = temp
+        document.getElementById(umaIndex[i].umaName+'Move').style.transform = temp;
     }
 }
 /*말 프로필 카드 세팅*/
